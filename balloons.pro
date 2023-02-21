@@ -32,12 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     Readme.txt \
-    images/balloon_blue.png \
-    images/balloon_green.png \
-    images/balloon_purple.png \
-    images/balloon_red.png \
-    images/balloon_yellow.png \
-    images/tilesetOpenGameBackground.png
 
 RESOURCES += \
     assets.qrc
