@@ -5,19 +5,14 @@
 #include <QEvent>
 #include <QTouchEvent>
 
-balloon::balloon(imageLoader& frames, quint16 speed, QGraphicsItem* parent):
+const qreal balloon::MAX_SPEED = 8.0;
+
+balloon::balloon(balloonLoader& frames, QGraphicsItem* parent):
     QGraphicsPixmapItem(parent),pFrames(frames),
-    frameNumber(0),pFrameAdvance(0),pPopped(false),pSpeed(speed),
+    frameNumber(0),pFrameAdvance(0),pPopped(false),
     pDeltax(0)
 {
-    if( speed > MAX_SPEED)
-    {
-        pSpeed = MAX_SPEED;
-    }
-    if( pSpeed < 1)
-    {
-        pSpeed = 1;
-    }
+    pSpeed = QRandomGenerator::global()->generateDouble()*MAX_SPEED+.1 ;
     setPixmap(pFrames.getNormalFrame(0));
     setAcceptTouchEvents(true);
 }
@@ -36,7 +31,7 @@ void balloon::update(const QRectF &rect)
 }
 void balloon::advance(int phase)
 {
-    // Ballloon pops when reachign the top border of the scene
+    // Ballloon pops when reaches the top border of the scene
     if (y()< scene()->sceneRect().top())
     {
         hit();
@@ -61,10 +56,11 @@ void balloon::advance(int phase)
             frame++;
             frame %= pFrames.getMaxFrames();
             /* Generate random x variations only when updating frame animation */
-            pDeltax = QRandomGenerator::global()->generate()%3-1;
+            pDeltax = QRandomGenerator::global()->generateDouble()*4.0-2.0;
             setFrameNumber(frame);
 
         }
+
         setY(y()-pSpeed);
         setX(x()+pDeltax);
         update();

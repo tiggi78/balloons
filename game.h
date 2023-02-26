@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 #include <QVector>
 
-#include "imageloader.h"
+#include "balloonloader.h"
 #include "soundmanager.h"
 
 QT_BEGIN_NAMESPACE
@@ -27,7 +27,7 @@ private slots:
 private:
     Ui::Game *ui;
     QGraphicsScene* pScene;
-    QVector<imageLoader> pBalloons;
+    QVector<balloonLoader> pBalloons;
     QVector<QPixmap> pClouds;
     soundManager* pSoundMan;
 

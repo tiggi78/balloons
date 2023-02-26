@@ -3,9 +3,10 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include "balloon.h"
+#include "cloud.h"
 
-const int X_MAX = 640;
-const int Y_MAX = 320;
+const qreal X_MAX = 640.0;
+const qreal Y_MAX = 320.0;
 
 Game::Game(QWidget *parent)
     : QMainWindow(parent)
@@ -29,15 +30,14 @@ Game::Game(QWidget *parent)
 
 void Game::newBalloon()
 {
-    quint16 index = QRandomGenerator::global()->generate()%pBalloons.size();
-    quint16 speed = QRandomGenerator::global()->generate()%balloon::MAX_SPEED;
-    balloon* b = new balloon(pBalloons[index],speed);
+    quint32 index = QRandomGenerator::global()->bounded(pBalloons.size());
+    balloon* b = new balloon(pBalloons[index]);
     connect(b,SIGNAL(popEndAnimation()),this,SLOT(removePopped()));
 
     connect(b,SIGNAL(popped()),pSoundMan,SLOT(playPopEffect()));
 
-    qint16 x = QRandomGenerator::global()->generate()%(2*X_MAX) - X_MAX;
-    qint16 y = Y_MAX;
+    qreal x = QRandomGenerator::global()->generateDouble()*2*X_MAX-X_MAX;
+    qreal y = Y_MAX;
     b->setPos(x,y);
     b->setTransformationMode(Qt::SmoothTransformation);
     b->setScale(.3);
@@ -52,7 +52,6 @@ void Game::newBalloon()
 }
 
 void Game::setScene(){
-    //ui->mainView->setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
 
     /*
     pBalloons.append(imageLoader(":/images/balloon_blue.png",2,3,16,32));
@@ -66,62 +65,63 @@ void Game::setScene(){
                                ":/images/blue-balloon/4.png",":/images/blue-balloon/5.png",
                                ":/images/blue-balloon/6.png"};
 
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
     normal = {":/images/yellow-balloon/1.png"};
     popped = {":/images/yellow-balloon/2.png",":/images/yellow-balloon/3.png",
               ":/images/yellow-balloon/4.png",":/images/yellow-balloon/5.png",\
               ":/images/yellow-balloon/6.png"};
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
 
     normal = {":/images/green-balloon/1.png"};
     popped = {":/images/green-balloon/2.png",":/images/green-balloon/3.png",
               ":/images/green-balloon/4.png",":/images/green-balloon/5.png",\
               ":/images/green-balloon/6.png"};
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
 
     normal = {":/images/orange-balloon/1.png"};
     popped = {":/images/orange-balloon/2.png",":/images/orange-balloon/3.png",
               ":/images/orange-balloon/4.png",":/images/orange-balloon/5.png",\
               ":/images/orange-balloon/6.png"};
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
 
     normal = {":/images/pink-balloon/1.png"};
     popped = {":/images/pink-balloon/2.png",":/images/pink-balloon/3.png",
               ":/images/pink-balloon/4.png",":/images/pink-balloon/5.png",\
               ":/images/pink-balloon/6.png"};
 
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
     normal = {":/images/purple-balloon/1.png"};
     popped = {":/images/purple-balloon/2.png",":/images/purple-balloon/3.png",
               ":/images/purple-balloon/4.png",":/images/purple-balloon/5.png",\
               ":/images/purple-balloon/6.png"};
 
-    pBalloons.append(imageLoader(normal,popped));
+    pBalloons.append(balloonLoader(normal,popped));
     normal = {":/images/red-balloon/1.png"};
     popped = {":/images/red-balloon/2.png",":/images/red-balloon/3.png",
               ":/images/red-balloon/4.png",":/images/red-balloon/5.png",\
               ":/images/red-balloon/6.png"};
+    pBalloons.append(balloonLoader(normal,popped));
 
 
     pScene = new QGraphicsScene(this);
-    pScene->addLine(-X_MAX,0,X_MAX,0,QPen(Qt::red));
-    pScene->addLine(0,-Y_MAX,0,Y_MAX,QPen(Qt::yellow));
+    pScene->addLine(0,0,X_MAX,0,QPen(Qt::red));
+    pScene->addLine(0,0,0,Y_MAX,QPen(Qt::yellow));
     pScene->addRect(-X_MAX,-Y_MAX,2*X_MAX,2*Y_MAX);
 
     pScene->setBackgroundBrush(Qt::blue);
     pClouds.append(QPixmap(":/images/Cloud_1.png"));
     pClouds.append(QPixmap(":/images/Cloud_2.png"));
     pClouds.append(QPixmap(":/images/Cloud_3.png"));
-    for (quint16 i=0; i< 15;++i)
+    for (quint16 i=0; i< 20; ++i)
     {
-        quint16 cloud = QRandomGenerator::global()->generate()%pClouds.size();
-        qint16 x = QRandomGenerator::global()->generate()%(2*X_MAX) - X_MAX;
-        qint16 y = QRandomGenerator::global()->generate()%(2*Y_MAX) - Y_MAX;
-        QGraphicsPixmapItem* item =  pScene->addPixmap(pClouds[cloud]);
-        item->setPos(x,y);
-        item->setTransformationMode(Qt::SmoothTransformation);
+        qreal x = QRandomGenerator::global()->generateDouble()*2*X_MAX-X_MAX;
+        qreal y = QRandomGenerator::global()->generateDouble()*2*Y_MAX-Y_MAX;
+        cloud* cl = new cloud(pClouds);
+        cl->setPos(x,y);
+        cl->setTransformationMode(Qt::SmoothTransformation);
+        cl->setScale(.3);
+        pScene->addItem(cl);
 
-        item->setScale(.3);
     }
     ui->mainView->setScene(pScene);
     pScene->setSceneRect(-X_MAX,-Y_MAX,2*X_MAX,2*Y_MAX);

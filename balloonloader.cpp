@@ -1,6 +1,6 @@
-#include "imageloader.h"
+#include "balloonloader.h"
 
-imageLoader::imageLoader(const QString image,const quint16 rows, const quint16 cols, const quint16 frameWidth, const quint16 frameHeight)
+balloonLoader::balloonLoader(const QString image,const quint16 rows, const quint16 cols, const quint16 frameWidth, const quint16 frameHeight)
 {
     QPixmap fullImage(image);
     /*
@@ -18,7 +18,7 @@ imageLoader::imageLoader(const QString image,const quint16 rows, const quint16 c
     pMaxFrames = cols;
 }
 
-imageLoader::imageLoader(const QVector<QString>& normalFiles, const QVector<QString>& poppedFiles){
+balloonLoader::balloonLoader(const QVector<QString>& normalFiles, const QVector<QString>& poppedFiles){
     pMaxFrames = qMax(normalFiles.size(), poppedFiles.size());
     pNormalFrames.resize(pMaxFrames);
     pPoppedFrames.resize(pMaxFrames);
@@ -46,7 +46,7 @@ imageLoader::imageLoader(const QVector<QString>& normalFiles, const QVector<QStr
     }
 }
 
-const QPixmap& imageLoader::getNormalFrame(quint16 frame) const
+const QPixmap& balloonLoader::getNormalFrame(quint16 frame) const
 {
     if( pMaxFrames > frame){
         return pNormalFrames[frame];
@@ -55,7 +55,7 @@ const QPixmap& imageLoader::getNormalFrame(quint16 frame) const
         return pEmptyPixmap;
     }
 }
-const QPixmap& imageLoader::getPoppedFrame(quint16 frame) const
+const QPixmap& balloonLoader::getPoppedFrame(quint16 frame) const
 {
     if( pMaxFrames > frame){
         return pPoppedFrames[frame];
@@ -64,6 +64,6 @@ const QPixmap& imageLoader::getPoppedFrame(quint16 frame) const
         return pEmptyPixmap;
     }
 }
-quint16 imageLoader::getMaxFrames() const{
+quint16 balloonLoader::getMaxFrames() const{
     return pMaxFrames;
 }

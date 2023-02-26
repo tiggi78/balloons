@@ -1,16 +1,16 @@
-#ifndef IMAGELOADER_H
-#define IMAGELOADER_H
+#ifndef BALLOONLOADER_H
+#define BALLOONLOADER_H
 
 #include <QString>
 #include <QPixmap>
 #include <QVector>
 
-class imageLoader
+class balloonLoader
 {
 public:
-    imageLoader(const QString image, const quint16 rows, const quint16 cols, const quint16 frameWidth, const quint16 frameHeight);
+    balloonLoader(const QString image, const quint16 rows, const quint16 cols, const quint16 frameWidth, const quint16 frameHeight);
 
-    imageLoader(const QVector<QString>& normalFiles, const QVector<QString>& poppedFiles);
+    balloonLoader(const QVector<QString>& normalFiles, const QVector<QString>& poppedFiles);
 
     const QPixmap& getNormalFrame(quint16 frame) const;
     const QPixmap& getPoppedFrame(quint16 frame) const;
@@ -23,4 +23,4 @@ private:
     quint16 pMaxFrames;
 };
 
-#endif // IMAGELOADER_H
+#endif // BALLOONLOADER_H

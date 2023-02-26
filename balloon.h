@@ -3,14 +3,13 @@
 
 #include <QGraphicsPixmapItem>
 #include <QPainter>
-#include "imageloader.h"
+#include "balloonloader.h"
 
 class balloon : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    static const quint16 MAX_SPEED = 10;
-    balloon(imageLoader& frames, quint16 speed = 1 ,QGraphicsItem* parent=NULL);
+    balloon(balloonLoader& frames ,QGraphicsItem* parent=NULL);
     quint16 getFrameNumber() const;
     void setFrameNumber(quint16 newPFrameNumber);
     void update(const QRectF &rect = QRectF());
@@ -26,12 +25,14 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    imageLoader& pFrames;
+    static const qreal MAX_SPEED;
+    balloonLoader& pFrames;
     quint16 frameNumber;
     quint16 pFrameAdvance;
     bool pPopped;
-    quint16 pSpeed;
-    qint16 pDeltax;
+    qreal pSpeed;
+    qreal pDeltax;
+
     void hit();
     Q_PROPERTY(quint16 frameNumber READ getFrameNumber WRITE setFrameNumber NOTIFY frameNumberChanged)
 

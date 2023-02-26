@@ -10,16 +10,18 @@ CONFIG += c++17
 
 SOURCES += \
     balloon.cpp \
+    balloonloader.cpp \
+    cloud.cpp \
     game.cpp \
-    imageloader.cpp \
     main.cpp \
     soundmanager.cpp \
 #    testsound.cpp
 
 HEADERS += \
     balloon.h \
+    balloonloader.h \
+    cloud.h \
     game.h \
-    imageloader.h \
     soundmanager.h
 
 FORMS += \
